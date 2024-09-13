@@ -80,6 +80,6 @@ if st.button('Download Data'):
         st.download_button(
             label='Download CSV',
             data=csv,
-            file_name='adjusted_data.csv',
+            file_name='data.csv',
             mime='text/csv'
         )
