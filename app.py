@@ -1,13 +1,17 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
+from datetime import datetime, timedelta
 
 def download_adjusted_data(tickers, start_date, end_date):
+    # Add one day to the end_date to include it in the results
+    end_date_plus_one = (datetime.strptime(end_date, '%Y-%m-%d') + timedelta(days=1)).strftime('%Y-%m-%d')
+
     # Download data
     data = yf.download(
         tickers,
         start=start_date,
-        end=end_date,
+        end=end_date_plus_one,  # Use the modified end date
         group_by='ticker',
         auto_adjust=False,
         threads=True
@@ -52,6 +56,9 @@ def download_adjusted_data(tickers, start_date, end_date):
     # Round to 4 decimal places
     result = round(result, 4)
 
+    # Filter to include only data up to the original end_date
+    result = result[result['<DTYYYYMMDD>'] <= end_date.replace('-', '')]
+
     return result
 
 # Streamlit App
@@ -69,7 +76,7 @@ if st.button('Download Data'):
     else:
         # Download and adjust data
         with st.spinner('Downloading and processing data...'):
-            df = download_adjusted_data(tickers, start_date, end_date)
+            df = download_adjusted_data(tickers, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
         st.success('Data downloaded and adjusted successfully!')
 
         # Display Data
