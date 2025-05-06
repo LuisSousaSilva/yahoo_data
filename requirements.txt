@@ -1,4 +1,4 @@
 pandas==2.2.2
 streamlit==1.37.1
-yfinance==0.2.54
+yfinance==0.2.58
 sqlite3-api==1.0.3
