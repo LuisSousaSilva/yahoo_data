@@ -20,11 +20,7 @@ def download_adjusted_data(tickers, start_date, end_date):
     adjusted_data = []
 
     for ticker in tickers:
-        # Handle single and multiple tickers
-        if len(tickers) == 1:
-            df = data.copy()
-        else:
-            df = data[ticker].copy()
+        df = data[ticker].copy()
 
         df.dropna(inplace=True)
         df.reset_index(inplace=True)
